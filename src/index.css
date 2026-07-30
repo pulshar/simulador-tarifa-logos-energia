@@ -1,0 +1,195 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Instrument Serif", "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Colors mapped to Tailwind v4 names */
+  --color-bg-warm: #fbfaf7;
+  --color-bg-warm-alt: #f4f2ec;
+  --color-ink: #0a1220;
+  --color-ink-soft: #4a5567;
+  --color-ink-mute: #7a8599;
+
+  --color-brand: #906740;
+  --color-brand-ink: #134247;
+  --color-brand-soft: #f6f0ea;
+  --color-accent: #ffc107;
+  --color-accent-soft: #dfecfb;
+
+  /* Mapping Logos colors to our brand color scheme for compatibility */
+  --color-logos-50: #e8f3f2;
+  --color-logos-100: #d5f7ee;
+  --color-logos-200: #a3ebd9;
+  --color-logos-300: #60dfc1;
+  --color-logos-400: #1ddbb7;
+  --color-logos-500: #1ba68f;
+  --color-logos-600: #1d676c;
+  --color-logos-700: #134247;
+  --color-logos-800: #0d2d30;
+  --color-logos-900: #071a1c;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-bg-warm);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .font-serif {
+    font-family: var(--font-serif);
+    font-weight: 400;
+  }
+
+  /* italic headings */
+  h1 em,
+  h2 em,
+  h3 em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-brand);
+  }
+
+  hr {
+    border-color: rgba(10, 18, 32, 0.085);
+  }
+}
+
+/* Custom premium button with fill transition */
+.btn-logos {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background-color: var(--color-ink);
+  color: var(--color-bg-warm);
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+  transition: color 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.btn-logos:hover {
+  color: var(--color-ink);
+  background-color: var(--color-accent);
+}
+
+.btn-logos__arrow {
+  display: inline-block;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-logos:hover .btn-logos__arrow {
+  transform: translateX(5px);
+}
+
+/* Ghost variant */
+.btn-logos--ghost {
+  background-color: transparent;
+  color: var(--color-ink);
+  border: 1px solid rgba(10, 18, 32, 0.12);
+  transition: border-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-logos--ghost:hover {
+  color: var(--color-ink);
+  border-color: var(--color-accent);
+  background-color: transparent;
+}
+
+/* Pulsing eyebrow dot */
+.eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--color-brand);
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulse-dot 2.6s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.6);
+    opacity: 0.4;
+  }
+}
+
+/* Custom form inputs styling */
+.form-input-premium {
+  width: 100%;
+  background-color: #ffffff;
+  border: 1px solid rgba(10, 18, 32, 0.08);
+  border-radius: 10px;
+  padding: 12px 16px;
+  color: var(--color-ink);
+  font-weight: 500;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.form-input-premium:focus {
+  outline: none;
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 4px var(--color-brand-soft);
+}
+
+.form-input-premium:hover:not(:focus) {
+  border-color: rgba(10, 18, 32, 0.16);
+}
+
+/* Custom cards and tabs styling */
+.card-premium {
+  background-color: #ffffff;
+  border: 1px solid rgba(10, 18, 32, 0.06);
+  border-radius: 24px;
+  box-shadow: 0 8px 30px rgba(10, 18, 32, 0.02);
+}
+
+.tabs-container-premium {
+  display: flex;
+  background-color: var(--color-bg-warm-alt);
+  padding: 4px;
+  border-radius: 14px;
+  border: 1px solid rgba(10, 18, 32, 0.04);
+}
+
+.tab-btn-premium {
+  flex: 1;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 10px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--color-ink-soft);
+  cursor: pointer;
+}
+
+.tab-btn-premium.active {
+  background-color: #ffffff;
+  color: var(--color-brand);
+  box-shadow: 0 4px 12px rgba(10, 18, 32, 0.04);
+  cursor: default;
+}
+
+.tab-btn-premium:hover:not(.active) {
+  color: var(--color-ink);
+}

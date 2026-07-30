@@ -1,0 +1,6 @@
+{
+  "name": "Logos Energía Estimador",
+  "description": "Simulador elegante para estimar la factura eléctrica con Logos Energía",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
