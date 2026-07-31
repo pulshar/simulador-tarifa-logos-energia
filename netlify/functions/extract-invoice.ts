@@ -1,4 +1,4 @@
-import { GoogleGenAI, Type } from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
 
 function formatAiError(error: unknown): string {
   if (error instanceof Error) {
@@ -63,27 +63,28 @@ export const handler = async (event: any) => {
     const ai = new GoogleGenAI({ apiKey });
 
     const prompt = `
-Extrae los datos de esta factura eléctrica.
+Analiza esta factura eléctrica.
 
-Presta atención a lo siguiente:
-
-- Si los consumos de energía (P1, P2, P3) o las potencias están divididos en varios tramos o periodos de fechas dentro de la misma factura, súmalos.
-
-- "dias" son los días facturados.
-
-- "importeActual" es el importe total con impuestos.
-
-Devuelve únicamente:
+Extrae únicamente estos campos:
 
 {
-  "potenciaP1": 0,
-  "potenciaP2": 0,
-  "consumoP1": 0,
-  "consumoP2": 0,
-  "consumoP3": 0,
-  "dias": 0,
-  "importeActual": 0
+  "potenciaP1": number,
+  "potenciaP2": number,
+  "consumoP1": number,
+  "consumoP2": number,
+  "consumoP3": number,
+  "dias": number,
+  "importeActual": number
 }
+
+Reglas:
+
+- Responde EXCLUSIVAMENTE con un JSON válido.
+- No escribas explicaciones.
+- No uses Markdown.
+- No utilices \`\`\`.
+- Si un dato no existe devuelve 0.
+- Si un valor aparece en varias líneas, súmalo.
 `;
 
     let lastError: unknown;
@@ -95,12 +96,11 @@ Devuelve únicamente:
         contents: [
           {
             role: "user",
-
             parts: [
               {
                 inlineData: {
-                  data: fileBase64,
                   mimeType,
+                  data: fileBase64,
                 },
               },
               {
@@ -109,43 +109,25 @@ Devuelve únicamente:
             ],
           },
         ],
-
-        config: {
-          responseMimeType: "application/json",
-
-          responseSchema: {
-            type: Type.OBJECT,
-
-            properties: {
-              potenciaP1: { type: Type.NUMBER },
-              potenciaP2: { type: Type.NUMBER },
-              consumoP1: { type: Type.NUMBER },
-              consumoP2: { type: Type.NUMBER },
-              consumoP3: { type: Type.NUMBER },
-              dias: { type: Type.NUMBER },
-              importeActual: { type: Type.NUMBER },
-            },
-
-            required: [
-              "potenciaP1",
-              "potenciaP2",
-              "consumoP1",
-              "consumoP2",
-              "consumoP3",
-              "dias",
-              "importeActual",
-            ],
-          },
-        },
       });
 
       if (!response.text) {
         throw new Error("No response from AI");
       }
 
+     let data;
+
+     try {
+       data = JSON.parse(response.text);
+     } catch {
+       throw new Error(
+         `Gemini no devolvió un JSON válido:\n\n${response.text}`,
+       );
+     }
+
       return {
         statusCode: 200,
-        body: response.text,
+        body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json",
         },
