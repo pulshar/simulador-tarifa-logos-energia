@@ -293,7 +293,7 @@ export function Step1Form({
                       ? "Suelta tu factura aquí"
                       : "Sube tu factura en PDF o imagen"}
                   </h3>
-                  <p className="text-ink-soft text-sm text-center max-w-sm mb-6">
+                  <p className="text-ink-soft text-sm text-center max-w-sm min-h-15 mb-6">
                     {isDragging
                       ? "Procesaremos tu archivo al soltarlo"
                       : "Arrastra y suelta aquí, o haz clic para buscar en tu dispositivo. Extraeremos los datos."}
