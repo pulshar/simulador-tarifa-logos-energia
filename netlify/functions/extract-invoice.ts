@@ -86,81 +86,72 @@ Devuelve únicamente:
 }
 `;
 
-    const models = [
-      process.env.GEMINI_MODEL?.trim(),
-      "gemini-3.6-flash",
-      "gemini-2.5-flash",
-      "gemini-2.0-flash",
-    ].filter(Boolean) as string[];
-
     let lastError: unknown;
 
-    for (const model of models) {
-      try {
-        const response = await ai.models.generateContent({
-          model,
+    try {
+      const response = await ai.models.generateContent({
+        model: "gemini-3.6-flash",
 
-          contents: [
-            {
-              role: "user",
+        contents: [
+          {
+            role: "user",
 
-              parts: [
-                {
-                  inlineData: {
-                    data: fileBase64,
-                    mimeType,
-                  },
+            parts: [
+              {
+                inlineData: {
+                  data: fileBase64,
+                  mimeType,
                 },
-                {
-                  text: prompt,
-                },
-              ],
-            },
-          ],
-
-          config: {
-            responseMimeType: "application/json",
-
-            responseSchema: {
-              type: Type.OBJECT,
-
-              properties: {
-                potenciaP1: { type: Type.NUMBER },
-                potenciaP2: { type: Type.NUMBER },
-                consumoP1: { type: Type.NUMBER },
-                consumoP2: { type: Type.NUMBER },
-                consumoP3: { type: Type.NUMBER },
-                dias: { type: Type.NUMBER },
-                importeActual: { type: Type.NUMBER },
               },
+              {
+                text: prompt,
+              },
+            ],
+          },
+        ],
 
-              required: [
-                "potenciaP1",
-                "potenciaP2",
-                "consumoP1",
-                "consumoP2",
-                "consumoP3",
-                "dias",
-                "importeActual",
-              ],
+        config: {
+          responseMimeType: "application/json",
+
+          responseSchema: {
+            type: Type.OBJECT,
+
+            properties: {
+              potenciaP1: { type: Type.NUMBER },
+              potenciaP2: { type: Type.NUMBER },
+              consumoP1: { type: Type.NUMBER },
+              consumoP2: { type: Type.NUMBER },
+              consumoP3: { type: Type.NUMBER },
+              dias: { type: Type.NUMBER },
+              importeActual: { type: Type.NUMBER },
             },
-          },
-        });
 
-        if (!response.text) {
-          throw new Error("No response from AI");
-        }
-
-        return {
-          statusCode: 200,
-          body: response.text,
-          headers: {
-            "Content-Type": "application/json",
+            required: [
+              "potenciaP1",
+              "potenciaP2",
+              "consumoP1",
+              "consumoP2",
+              "consumoP3",
+              "dias",
+              "importeActual",
+            ],
           },
-        };
-      } catch (err) {
-        lastError = err;
+        },
+      });
+
+      if (!response.text) {
+        throw new Error("No response from AI");
       }
+
+      return {
+        statusCode: 200,
+        body: response.text,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+    } catch (err) {
+      lastError = err;
     }
 
     throw lastError;
