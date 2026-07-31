@@ -123,7 +123,7 @@ export function Step1Form({
         const base64String = (reader.result as string).split(",")[1];
 
         try {
-          const res = await fetch("/api/extract-invoice", {
+          const res = await fetch("/.netlify/functions/extract-invoice", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
