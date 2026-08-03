@@ -54,7 +54,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col pt-12 pb-24 px-4 md:px-8 bg-bg-warm-alt selection:bg-accent/30 selection:text-ink">
+    <div className="min-h-screen flex flex-col pt-12 pb-12 md:pb-24 px-4 md:px-8 bg-bg-warm-alt selection:bg-accent/30 selection:text-ink">
       <main className="flex-1 w-full flex flex-col items-center justify-center">
         <AnimatePresence mode="wait">
           {step === 1 && (

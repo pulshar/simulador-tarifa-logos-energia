@@ -1,6 +1,6 @@
-import { Info, Loader2, UploadCloud, Sparkles, MoveRight } from "lucide-react";
+import { Info, Loader2, MoveRight, Sparkles, UploadCloud } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { UserInputs } from "../types";
 
 interface InputFieldProps {
@@ -22,24 +22,76 @@ function InputField({
   required = true,
   tooltipAlign = "center",
 }: InputFieldProps) {
+  const [isTooltipVisible, setIsTooltipVisible] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(pointer: coarse)");
+    const updateDeviceState = () => setIsTouchDevice(mediaQuery.matches);
+
+    updateDeviceState();
+    mediaQuery.addEventListener?.("change", updateDeviceState);
+
+    return () => {
+      mediaQuery.removeEventListener?.("change", updateDeviceState);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isTooltipVisible || !isTouchDevice) {
+      return;
+    }
+
+    const handlePointerDown = () => setIsTooltipVisible(false);
+    document.addEventListener("click", handlePointerDown);
+
+    return () => document.removeEventListener("click", handlePointerDown);
+  }, [isTooltipVisible, isTouchDevice]);
+
   return (
     <div className="flex flex-col gap-1.5">
       <label className="text-sm font-medium text-ink-soft flex items-center gap-1.5">
         {label}
         <div className="group relative flex items-center">
-          <Info className="w-4 h-4 text-ink-mute cursor-help" />
+          <button
+            type="button"
+            aria-label={`Más información sobre ${label}`}
+            className="flex items-center"
+            onMouseEnter={() => {
+              if (!isTouchDevice) {
+                setIsTooltipVisible(true);
+              }
+            }}
+            onMouseLeave={() => {
+              if (!isTouchDevice) {
+                setIsTooltipVisible(false);
+              }
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+
+              if (isTouchDevice) {
+                setIsTooltipVisible((prev) => !prev);
+              }
+            }}
+          >
+            <Info className="w-4 h-4 text-ink-mute cursor-help" />
+          </button>
           <div
-            className={`absolute bottom-full mb-2 w-48 p-2 bg-ink text-bg-warm text-xs rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-10 text-center shadow-lg ${tooltipAlign === "right"
-              ? "right-[-10px]"
-              : "left-1/2 -translate-x-1/2"
-              }`}
+            className={`absolute bottom-full mb-2 w-48 p-2 bg-ink text-bg-warm text-xs rounded-lg opacity-0 pointer-events-none transition-opacity z-10 text-center shadow-lg ${isTooltipVisible ? "opacity-100" : ""} group-hover:opacity-100 ${
+              tooltipAlign === "right"
+                ? "right-[-10px]"
+                : "left-1/2 -translate-x-1/2"
+            }`}
           >
             {tooltip}
             <div
-              className={`absolute top-full border-4 border-transparent border-t-ink ${tooltipAlign === "right"
-                ? "right-[14px]"
-                : "left-1/2 -translate-x-1/2"
-                }`}
+              className={`absolute top-full border-4 border-transparent border-t-ink ${
+                tooltipAlign === "right"
+                  ? "right-[14px]"
+                  : "left-1/2 -translate-x-1/2"
+              }`}
             ></div>
           </div>
         </div>
@@ -203,13 +255,14 @@ export function Step1Form({
       <div className="text-center mb-10 flex flex-col items-center">
         <div className="inline-flex items-center gap-2 text-xs font-mono tracking-[0.16em] uppercase text-ink-mute mb-3">
           <span className="eyebrow-dot" />
-          Simulador de tarifas  
+          Simulador de tarifas
         </div>
         <h1 className="text-4xl md:text-5xl font-serif text-ink tracking-tight text-balance mb-4">
           Descubre cuánto pagarías con <em>Logos Energía.</em>
         </h1>
         <p className="text-ink-soft text-lg leading-relaxed max-w-md">
-          Introduce los datos manualmente o sube tu factura y obtén una estimación inmediata de tu ahorro.
+          Introduce los datos manualmente o sube tu factura y obtén una
+          estimación inmediata de tu ahorro.
         </p>
       </div>
 

@@ -53,7 +53,7 @@ export function Step2Results({ result, importeActual, onReset }: Props) {
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.4, delay }}
-      className="flex justify-between items-center py-3.5 border-b border-ink/5 last:border-0"
+      className="flex justify-between items-center py-3.5 border-b border-ink/10 last:border-0"
     >
       <span className="text-ink-soft font-sans">{label}</span>
       <span className="font-mono font-medium text-ink">
@@ -70,7 +70,7 @@ export function Step2Results({ result, importeActual, onReset }: Props) {
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       className="w-full max-w-lg mx-auto"
     >
-      <div className="card-premium p-8 md:p-10 mb-8 relative overflow-hidden">
+      <div className="card-premium p-6 md:p-10 -mt-8 md:mt-0 mb-8 relative overflow-hidden">
         <h2 className="text-2xl md:text-3xl font-serif text-ink mb-6 text-center">
           Tu estimación con <em>Logos Energía.</em>
         </h2>
