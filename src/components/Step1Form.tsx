@@ -203,14 +203,13 @@ export function Step1Form({
       <div className="text-center mb-10 flex flex-col items-center">
         <div className="inline-flex items-center gap-2 text-xs font-mono tracking-[0.16em] uppercase text-ink-mute mb-3">
           <span className="eyebrow-dot" />
-          Simulador de tarifas
+          Simulador de tarifas  
         </div>
         <h1 className="text-4xl md:text-5xl font-serif text-ink tracking-tight text-balance mb-4">
           Descubre cuánto pagarías con <em>Logos Energía.</em>
         </h1>
         <p className="text-ink-soft text-lg leading-relaxed max-w-md">
-          Introduce los datos básicos de tu consumo y obtén una estimación
-          inmediata de tu ahorro.
+          Introduce los datos manualmente o sube tu factura y obtén una estimación inmediata de tu ahorro.
         </p>
       </div>
 
@@ -230,7 +229,9 @@ export function Step1Form({
             className={`tab-btn-premium flex items-center justify-center gap-1.5 ${activeTab === "upload" ? "active" : ""}`}
           >
             <span>Subir factura</span>
-            <Sparkles className={`w-3.5 h-3.5 transition-colors ${activeTab === "upload" ? "text-brand" : "text-ink-soft"}`} />
+            <Sparkles
+              className={`w-3.5 h-3.5 transition-colors ${activeTab === "upload" ? "text-brand" : "text-ink-soft"}`}
+            />
           </button>
         </div>
 
@@ -242,10 +243,11 @@ export function Step1Form({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3 }}
-              className={`flex flex-col items-center justify-center p-12 border border-dashed rounded-2xl transition-all cursor-pointer group ${isDragging
-                ? "border-brand bg-brand-soft"
-                : "border-ink/10 bg-bg-warm-alt/30 hover:bg-bg-warm-alt/60 hover:border-brand/40"
-                }`}
+              className={`flex flex-col items-center justify-center p-12 border border-dashed rounded-2xl transition-all cursor-pointer group ${
+                isDragging
+                  ? "border-brand bg-brand-soft"
+                  : "border-ink/10 bg-bg-warm-alt/30 hover:bg-bg-warm-alt/60 hover:border-brand/40"
+              }`}
               onClick={() => !isUploading && fileInputRef.current?.click()}
               onDragOver={onDragOver}
               onDragLeave={onDragLeave}
@@ -281,10 +283,11 @@ export function Step1Form({
               ) : (
                 <div className="flex flex-col items-center pointer-events-none w-full">
                   <div
-                    className={`w-16 h-16 bg-white rounded-full flex items-center justify-center border transition-all mb-4 ${isDragging
-                      ? "border-brand/20 scale-110 text-brand"
-                      : "border-ink/5 text-brand group-hover:scale-105"
-                      }`}
+                    className={`w-16 h-16 bg-white rounded-full flex items-center justify-center border transition-all mb-4 ${
+                      isDragging
+                        ? "border-brand/20 scale-110 text-brand"
+                        : "border-ink/5 text-brand group-hover:scale-105"
+                    }`}
                   >
                     <UploadCloud className="w-8 h-8" />
                   </div>
@@ -300,10 +303,11 @@ export function Step1Form({
                   </p>
                   <button
                     type="button"
-                    className={`font-medium text-sm px-4 py-2 rounded-full transition-all ${isDragging
-                      ? "bg-brand text-white shadow-sm"
-                      : "text-brand bg-brand-soft group-hover:bg-brand/20"
-                      }`}
+                    className={`font-medium text-sm px-4 py-2 rounded-full transition-all ${
+                      isDragging
+                        ? "bg-brand text-white shadow-sm"
+                        : "text-brand bg-brand-soft group-hover:bg-brand/20"
+                    }`}
                   >
                     Seleccionar archivo
                   </button>
@@ -421,12 +425,11 @@ export function Step1Form({
               </div>
 
               <div className="mt-10">
-                <button
-                  type="submit"
-                  className="w-full btn-logos py-4 text-xl"
-                >
+                <button type="submit" className="w-full btn-logos py-4 text-xl">
                   <span>Calcular mi factura</span>
-                  <span className="btn-logos__arrow"><MoveRight className="w-5 h-5 mt-0.5 shrink-0" /></span>
+                  <span className="btn-logos__arrow">
+                    <MoveRight className="w-5 h-5 mt-0.5 shrink-0" />
+                  </span>
                 </button>
               </div>
             </motion.form>
