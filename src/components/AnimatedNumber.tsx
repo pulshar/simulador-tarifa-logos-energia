@@ -1,21 +1,39 @@
-import { useEffect, useState } from 'react';
-import { animate } from 'motion';
+import { animate } from "motion";
+import { useEffect, useState } from "react";
 
-export function AnimatedNumber({ value, prefix = '', suffix = '' }: { value: number, prefix?: string, suffix?: string }) {
+interface AnimatedNumberProps {
+  value: number;
+  prefix?: string;
+  suffix?: string;
+  onComplete?: () => void;
+}
+
+export function AnimatedNumber({
+  value,
+  prefix = "",
+  suffix = "",
+  onComplete,
+}: AnimatedNumberProps) {
   const [displayValue, setDisplayValue] = useState(0);
 
   useEffect(() => {
     const controls = animate(0, value, {
       duration: 1,
       ease: "easeOut",
-      onUpdate: (v) => setDisplayValue(v)
+      onUpdate: (v) => setDisplayValue(v),
+      onComplete,
     });
     return () => controls.stop();
-  }, [value]);
+  }, [value, onComplete]);
 
   return (
     <span>
-      {prefix}{displayValue.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}{suffix}
+      {prefix}
+      {displayValue.toLocaleString("es-ES", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}
+      {suffix}
     </span>
   );
 }
