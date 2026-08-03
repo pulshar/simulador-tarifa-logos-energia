@@ -1,32 +1,6 @@
 import { TariffConfig } from "../types";
-/*
-export const LOGOS_ENERGIA_CONFIG: TariffConfig = {
-  // Configuración de precios actualizada (Tarifa Clásica / Valores del script)
-  precioPotenciaDiaP1: 0.075903, // €/kW/día
-  precioPotenciaDiaP2: 0.001987, // €/kW/día
 
-  precioEnergiaP1: 0.222166, // €/kWh
-  precioEnergiaP2: 0.146315, // €/kWh
-  precioEnergiaP3: 0.126367, // €/kWh
-
-  precioEnergiaP1Var: 0.231296, // €/kWh
-  precioEnergiaP2Var: 0.153635, // €/kWh
-  precioEnergiaP3Var: 0.131989, // €/kWh
-
-  costeBonoSocialDia: 0.024688, // €/día
-  alquilerContadorDia: 0.02663, // €/día
-
-  impuestoElectrico: 0.051127, // 5.1127%
-  iva: 0.21, // 21%
-};
-
-export const LOGOS_CONTRACT_URL = {
-  clasica: "https://logosenergia.es/contratar?tarifa=clasica",
-  variable: "https://logosenergia.es/contratar?tarifa=variable",
-};
-*/
-
-export const LOGOS_ENERGIA_CONFIG: TariffConfig = {
+const DEFAULT_TARIFF_CONFIG: TariffConfig = {
   // Precios de potencia (€/kW/día)
   precioPotenciaDiaP1: 0.086861,
   precioPotenciaDiaP2: 0.012946,
@@ -49,6 +23,59 @@ export const LOGOS_ENERGIA_CONFIG: TariffConfig = {
   impuestoElectrico: 0.051127, // 5.1127%
   iva: 0.21, // 21%
 };
+
+export const LOGOS_ENERGIA_CONFIG: TariffConfig = { ...DEFAULT_TARIFF_CONFIG };
+
+const TARIFF_CONFIG_KEYS: (keyof TariffConfig)[] = [
+  "precioPotenciaDiaP1",
+  "precioPotenciaDiaP2",
+  "precioEnergiaP1",
+  "precioEnergiaP2",
+  "precioEnergiaP3",
+  "precioEnergiaP1Var",
+  "precioEnergiaP2Var",
+  "precioEnergiaP3Var",
+  "costeBonoSocialDia",
+  "alquilerContadorDia",
+  "impuestoElectrico",
+  "iva",
+];
+
+function isTariffConfig(value: unknown): value is TariffConfig {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const candidate = value as Record<string, unknown>;
+  return TARIFF_CONFIG_KEYS.every((key) => typeof candidate[key] === "number");
+}
+
+export async function loadTariffConfig(): Promise<TariffConfig> {
+  try {
+    const response = await fetch("/tariff-config.json", {
+      cache: "no-store",
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      return { ...DEFAULT_TARIFF_CONFIG };
+    }
+
+    const payload = await response.json();
+    if (!isTariffConfig(payload)) {
+      return { ...DEFAULT_TARIFF_CONFIG };
+    }
+
+    return {
+      ...DEFAULT_TARIFF_CONFIG,
+      ...payload,
+    };
+  } catch {
+    return { ...DEFAULT_TARIFF_CONFIG };
+  }
+}
 
 export const LOGOS_CONTRACT_URL = {
   clasica: "https://logosenergia.es/contratar?tarifa=clasica",

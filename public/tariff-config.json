@@ -1,0 +1,14 @@
+{
+  "precioPotenciaDiaP1": 0.086861,
+  "precioPotenciaDiaP2": 0.012946,
+  "precioEnergiaP1": 0.193066,
+  "precioEnergiaP2": 0.193066,
+  "precioEnergiaP3": 0.193066,
+  "precioEnergiaP1Var": 0.259332,
+  "precioEnergiaP2Var": 0.190165,
+  "precioEnergiaP3Var": 0.157301,
+  "costeBonoSocialDia": 0.02468985,
+  "alquilerContadorDia": 0.02663,
+  "impuestoElectrico": 0.051127,
+  "iva": 0.21
+}
