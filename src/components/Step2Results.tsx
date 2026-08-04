@@ -179,7 +179,7 @@ export function Step2Results({ result, importeActual, onReset }: Props) {
         transition={{ duration: 0.6, delay: 1 }}
         className="text-center space-y-6"
       >
-        <h3 className="text-2xl font-serif text-ink">Empieza a ahorrar hoy</h3>
+        <h2 className="text-2xl font-serif text-ink">Empieza a ahorrar hoy</h2>
         <div className="flex flex-col gap-3">
           <a
             href={LOGOS_CONTRACT_URL[activeTab]}
