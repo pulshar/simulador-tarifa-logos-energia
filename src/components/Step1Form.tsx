@@ -55,6 +55,7 @@ function InputField({
         <div className="group relative flex items-center">
           <button
             type="button"
+            tabIndex={-1}
             aria-label={`Más información sobre ${label}`}
             className="flex items-center"
             onMouseEnter={() => {
